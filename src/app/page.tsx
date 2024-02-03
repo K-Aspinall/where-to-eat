@@ -4,16 +4,15 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
 import styles from "./index.module.css";
+import TestLink from "~/app/_components/testLink";
 
 export default async function Home() {
   noStore();
-  const hello = await api.post.hello.query({ text: "from tRPC" });
-
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <h1 className={styles.title}>
-          Create <span className={styles.pinkSpan}>T3</span> App
+          Where shall we <span className={styles.pinkSpan}>eat</span>?
         </h1>
         <div className={styles.cardRow}>
           <Link
@@ -41,7 +40,7 @@ export default async function Home() {
         </div>
         <div className={styles.showcaseContainer}>
           <p className={styles.showcaseText}>
-            {hello ? hello.greeting : "Loading tRPC query..."}
+            <TestLink />
           </p>
         </div>
 
@@ -52,13 +51,13 @@ export default async function Home() {
 }
 
 async function CrudShowcase() {
-  const latestPost = await api.post.getLatest.query();
+  const latestTag = await api.tag.getLatest.query();
 
   return (
     <div className={styles.showcaseContainer}>
-      {latestPost ? (
+      {latestTag ? (
         <p className={styles.showcaseText}>
-          Your most recent post: {latestPost.name}
+          Your most recent tag: {latestTag.name}
         </p>
       ) : (
         <p className={styles.showcaseText}>You have no posts yet.</p>

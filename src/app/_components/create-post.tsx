@@ -10,7 +10,7 @@ export function CreatePost() {
   const router = useRouter();
   const [name, setName] = useState("");
 
-  const createPost = api.post.create.useMutation({
+  const createTag = api.tag.create.useMutation({
     onSuccess: () => {
       router.refresh();
       setName("");
@@ -21,7 +21,7 @@ export function CreatePost() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        createPost.mutate({ name });
+        createTag.mutate({ name });
       }}
       className={styles.form}
     >
@@ -35,9 +35,9 @@ export function CreatePost() {
       <button
         type="submit"
         className={styles.submitButton}
-        disabled={createPost.isLoading}
+        disabled={createTag.isLoading}
       >
-        {createPost.isLoading ? "Submitting..." : "Submit"}
+        {createTag.isLoading ? "Submitting..." : "Submit"}
       </button>
     </form>
   );
