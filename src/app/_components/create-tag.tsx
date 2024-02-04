@@ -6,7 +6,7 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import styles from "../index.module.css";
 
-export function CreatePost() {
+export function CreateTag() {
   const router = useRouter();
   const [name, setName] = useState("");
 

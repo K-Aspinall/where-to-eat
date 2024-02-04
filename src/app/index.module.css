@@ -66,6 +66,10 @@
   color: hsl(280 100% 70%);
 }
 
+.blueSpan {
+  color: hsl(229, 100%, 66%);
+}
+
 .cardRow {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));

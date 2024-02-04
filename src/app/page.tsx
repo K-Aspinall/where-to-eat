@@ -1,10 +1,11 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
-import { CreatePost } from "~/app/_components/create-post";
+import { CreateTag } from "~/app/_components/create-tag";
 import { api } from "~/trpc/server";
 import styles from "./index.module.css";
 import TestLink from "~/app/_components/testLink";
+import { type Resturant } from "@prisma/client";
 
 export default async function Home() {
   noStore();
@@ -14,6 +15,7 @@ export default async function Home() {
         <h1 className={styles.title}>
           Where shall we <span className={styles.pinkSpan}>eat</span>?
         </h1>
+        <RandomResturant />
         <div className={styles.cardRow}>
           <Link
             className={styles.card}
@@ -50,6 +52,23 @@ export default async function Home() {
   );
 }
 
+async function RandomResturant() {
+  const resturant = await api.resturant.getRandom.query() as Resturant | null;
+
+  return (
+    <div className={styles.showcaseContainer}>
+      {resturant ? (
+        <h1 className={styles.title}>
+          You should eat at: <span className={styles.blueSpan}>{resturant.name}</span>
+        </h1>
+      ) : (
+        <p className={styles.showcaseText}>You have no resturants yet.</p>
+      )}
+    </div>
+  );
+
+}
+
 async function CrudShowcase() {
   const latestTag = await api.tag.getLatest.query();
 
@@ -60,10 +79,10 @@ async function CrudShowcase() {
           Your most recent tag: {latestTag.name}
         </p>
       ) : (
-        <p className={styles.showcaseText}>You have no posts yet.</p>
+        <p className={styles.showcaseText}>You have no tags yet.</p>
       )}
 
-      <CreatePost />
+      <CreateTag />
     </div>
   );
 }
