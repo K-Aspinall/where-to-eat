@@ -6,7 +6,7 @@ export const resturantRouter = createTRPCRouter({
     create: publicProcedure
         .input(z.object({ name: z.string().min(1) }))
         .mutation(async ({ ctx, input }) => {
-            return ctx.db.tag.create({
+            return ctx.db.resturant.create({
                 data: {
                     name: input.name,
                 },
@@ -22,6 +22,6 @@ export const resturantRouter = createTRPCRouter({
     }),
 
     getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.db.tag.findMany();
+        return ctx.db.resturant.findMany();
     }),
 });

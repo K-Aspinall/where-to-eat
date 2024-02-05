@@ -5,6 +5,7 @@ import { CreateTag } from "~/app/_components/create-tag";
 import { api } from "~/trpc/server";
 import styles from "./index.module.css";
 import TestLink from "~/app/_components/testLink";
+import { ResturantCard } from "~/app/_components/resturant-card";
 import { type Resturant } from "@prisma/client";
 
 export default async function Home() {
@@ -16,30 +17,6 @@ export default async function Home() {
           Where shall we <span className={styles.pinkSpan}>eat</span>?
         </h1>
         <RandomResturant />
-        <div className={styles.cardRow}>
-          <Link
-            className={styles.card}
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className={styles.cardTitle}>First Steps →</h3>
-            <div className={styles.cardText}>
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className={styles.card}
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className={styles.cardTitle}>Documentation →</h3>
-            <div className={styles.cardText}>
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
         <div className={styles.showcaseContainer}>
           <p className={styles.showcaseText}>
             <TestLink />
@@ -53,14 +30,21 @@ export default async function Home() {
 }
 
 async function RandomResturant() {
-  const resturant = await api.resturant.getRandom.query() as Resturant | null;
+  // Current unsafe method returns an any[] not typesafe value or null so needs this nasty checking
+  const response = await api.resturant.getRandom.query() as Resturant[];
+  const resturant = response.length > 0 ? response[0] : null
+  console.log("Resturant response:")
+  console.log(resturant)
 
   return (
     <div className={styles.showcaseContainer}>
       {resturant ? (
-        <h1 className={styles.title}>
-          You should eat at: <span className={styles.blueSpan}>{resturant.name}</span>
-        </h1>
+        <>
+          <h1 className={styles.title}>
+            You should eat at:
+          </h1>
+          <ResturantCard resturant={resturant} />
+        </>
       ) : (
         <p className={styles.showcaseText}>You have no resturants yet.</p>
       )}
