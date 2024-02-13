@@ -13,12 +13,22 @@ export const resturantRouter = createTRPCRouter({
             });
         }),
 
-    getRandom: publicProcedure.query(({ ctx }) => {
+    // Old, raw method of fetching random 
+    getRandomRaw: publicProcedure.query(({ ctx }) => {
         // More performant that finding all then selecting random but an ugly non-typesafe workaround
         return ctx.db.$queryRawUnsafe(
             // DO NOT pass in or accept user input here
             `SELECT * FROM "Resturant" ORDER BY RANDOM() LIMIT 1;`,
         );
+    }),
+
+    getRandom: publicProcedure.query(({ ctx }) => {
+        return ctx.db.resturant.findRandom();
+    }),
+
+    // TODO: Move to fetching random list for caching?
+    getRandomMany: publicProcedure.query(({ ctx }) => {
+        return ctx.db.resturant.findManyRandom(10);
     }),
 
     getAll: publicProcedure.query(({ ctx }) => {

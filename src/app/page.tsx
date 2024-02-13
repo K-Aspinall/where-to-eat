@@ -1,6 +1,4 @@
 import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
-
 import { CreateTag } from "~/app/_components/create-tag";
 import { api } from "~/trpc/server";
 import styles from "./index.module.css";
@@ -30,9 +28,11 @@ export default async function Home() {
 }
 
 async function RandomResturant() {
-  // Current unsafe method returns an any[] not typesafe value or null so needs this nasty checking
-  const response = await api.resturant.getRandom.query() as Resturant[];
-  const resturant = response.length > 0 ? response[0] : null
+  // Raw method returns an any[] not typesafe value or null so needs this nasty checking
+  // const response = await api.resturant.getRandom.query() as Resturant[];
+  // const resturant = response.length > 0 ? response[0] : null
+
+  const resturant = await api.resturant.getRandom.query()
   console.log("Resturant response:")
   console.log(resturant)
 
